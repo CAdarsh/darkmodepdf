@@ -5,21 +5,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-images = convert_from_path('C:\Projects\pdfdarkmode\pdf\sample.pdf')
 
-# for i,image in enumerate(images):
-#     image = np.array(image)
-#     beforeImg = image
-#     image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-#     _,image = cv2.threshold(image,60,255,cv2.THRESH_BINARY_INV)
-#     image = cv2.blur(image,(2,2))
-#     images[i] = i;
-#     cv2.imwrite('C:\Projects\pdfdarkmode\pdf\image'+str(i)+'.png',image)
-#     # while True:
-#     #     cv2.imshow("Image",image)
-#     #     cv2.imshow("Before",beforeImg)
-#     #     if cv2.waitKey(1) & 0xFF == 27:
-#     #         break
+mainDir = 'C:\Projects\openCV\pdfdarkmode\darkmodepdf\pdf'
+
+
+def convertPDF():
+    images = convert_from_path(mainDir+'\sample.pdf')
+    for i,image in enumerate(images):
+        image = np.array(image)
+        beforeImg = image
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+        _,image = cv2.threshold(image,60,255,cv2.THRESH_BINARY_INV)
+        image = cv2.blur(image,(2,2))
+        images[i] = i;
+        cv2.imwrite(mainDir+'\image'+str(i)+'.png',image)
+        print("Lol")
+     
 
 def validateDIR(dirList):
     newArr = []
@@ -29,15 +30,26 @@ def validateDIR(dirList):
 
     return newArr    
 
-mainDir = 'C:\Projects\pdfdarkmode\pdf'
-list_of_images = os.listdir('C:\Projects\pdfdarkmode\pdf')
+def makePDF():
+    list_of_images = os.listdir(mainDir)
 
-list_of_images = validateDIR(list_of_images)
+    list_of_images = validateDIR(list_of_images)
 
-images = []
+    images = []
 
-for i in range(len(list_of_images)):
-    images.append(Image.open(mainDir+'\\'+list_of_images[i]))
+    for i in range(len(list_of_images)):
+        images.append(Image.open(mainDir+'\\'+list_of_images[i]))
 
-images[0].save(mainDir+'\\'+'converted.pdf',save_all=True,append_images = images[1:])
-print(images)
+    images[0].save(mainDir+'\\'+'converted.pdf',save_all=True,append_images = images[1:])
+    print(images)
+
+def delImages():
+    list_of_images = os.listdir(mainDir)
+    list_of_images = validateDIR(list_of_images)
+    for l in list_of_images:
+        os.remove(mainDir+'\\\\'+l) 
+
+convertPDF()
+makePDF()
+delImages()
+
